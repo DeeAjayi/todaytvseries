@@ -9,5 +9,4 @@ import scrapy
 
 
 class TodaytvseriesItem(scrapy.Item):
-    series_name = scrapy.Field()
     series_info = scrapy.Field()
