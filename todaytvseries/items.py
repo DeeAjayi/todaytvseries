@@ -10,3 +10,9 @@ import scrapy
 
 class TodaytvseriesItem(scrapy.Item):
     series_info = scrapy.Field()
+
+
+class SeriesEpisodeLinksItem(scrapy.Item):
+    no_of_season = scrapy.Field()
+    episode_per_season = scrapy.Field()
+    episode_url =scrapy.Field()
