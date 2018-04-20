@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from todaytvseries.items import TodaytvseriesItem
+from scrapy.linkextractors import LinkExtractor
 
 class TodayseriesSpider(scrapy.Spider):
     name = 'todayseries'
@@ -10,19 +11,13 @@ class TodayseriesSpider(scrapy.Spider):
         yield scrapy.Request('http://todaytvseries2.com/tv-series', callback=self.parse)
 
     def parse(self, response):
-        series_info = TodaytvseriesItem()
-        series_name = []
-        series_href = []
-        for title in response.css('h1.uk-article-title1 > a::attr(title)').extract():
-            series_name.append(title)
-        for href in response.css('h1.uk-article-title1 > a::attr(href)').extract():
-            url = response.urljoin(href)
-            series_href.append(url)
+        latest_series_info = TodaytvseriesItem()
+        latest_series_info['series_info'] = {}
 
-        series_info['series_info'] = dict(zip(series_name, series_href))
+        for series in response.css('h1.uk-article-title1'):
+            latest_series_info['series_info'][series.css('a::text').extract_first()] = series.css('a::attr(href)').extract_first()
 
-        return series_info
-
+        return latest_series_info
 
 
 
